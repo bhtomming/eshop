@@ -1,0 +1,11 @@
+imports:
+    - { resource: easy_admin/ }
+easy_admin:
+    site_name: '商城管理系统'
+    formats:
+        date: 'Y年m月d日'
+        time: 'H:i:s'
+        datetime: 'Y年m月d日H:i:s'
+    design:
+        menu:
+            - {label: '用户管理', entity: User}
