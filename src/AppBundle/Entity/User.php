@@ -15,6 +15,9 @@ use FOS\UserBundle\Model\User as BaseUser;
  */
 class User extends BaseUser
 {
+    const LEVLE_1 = '代理商';
+    const LEVLE_2 = '总代理商';
+
     /**
      * @var int
      *
@@ -74,6 +77,20 @@ class User extends BaseUser
     private $bankCard;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="direct", type="integer", nullable=true)
+     */
+    private $direct;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="indirect", type="integer", nullable=true)
+     */
+    private $indirect;
+
+    /**
      * @ORM\OneToMany(targetEntity="User",mappedBy="referee")
      */
     private $directTeam;
@@ -83,6 +100,37 @@ class User extends BaseUser
      * @JoinColumn(name="referee_id", referencedColumnName="id")
      */
     private $referee;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Cash", mappedBy="user")
+     */
+    private $cashed;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Commission", mappedBy="user")
+     */
+    private $commission;
+
+    /**
+     * @ORM\OneToMany(targetEntity="ConsumeLog", mappedBy="user")
+     */
+    private $consume;
+
+    /**
+     * @ORM\OneToMany(targetEntity="RechargeLog", mappedBy="user")
+     */
+    private $recharge;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Shares", mappedBy="user")
+     */
+    private $shares;
+
+    /**
+     * @var string
+     * @ORM\Column(name="level", type="string", length=255, nullable=true)
+     */
+    private $level;
 
 
     /**
@@ -242,11 +290,11 @@ class User extends BaseUser
     /**
      * Set referee
      *
-     * @param User $referee
+     * @param  $referee
      *
      * @return User
      */
-    public function setReferee(User $referee)
+    public function setReferee(? User $referee)
     {
         $this->referee = $referee;
 
@@ -275,6 +323,12 @@ class User extends BaseUser
     public function addDirectTeam(User $user){
         if(!$this->directTeam->contains($user)){
             $this->directTeam->add($user);
+            $user->setReferee($this);
+            $this->direct++;
+            $parent = $this->getReferee();
+            if($parent){
+                $parent->setIndirect($parent->getIndirect() + 1);
+            }
         }
         return $this;
     }
@@ -282,6 +336,12 @@ class User extends BaseUser
     public function removeDirectTeam(User $user){
         if($this->directTeam->contains($user)){
             $this->directTeam->remove($user);
+            $user->setReferee(null);
+            $this->direct--;
+            $parent = $this->getReferee();
+            if($parent){
+                $parent->setIndirect($parent->getIndirect() - 1);
+            }
         }
         return $this;
     }
@@ -294,9 +354,170 @@ class User extends BaseUser
         return $this->directTeam;
     }
 
+    public function addCashed(? Cash $cash){
+        if(!$this->cashed->contains($cash)){
+            $this->cashed->add($cash);
+        }
+        return $this;
+    }
+
+    public function removeCashed(? Cash $cash){
+        if($this->cashed->contains($cash)){
+            $this->cashed->remove($cash);
+        }
+        return $this;
+    }
+
+    public function getCashed(){
+        return $this->cashed;
+    }
+
+    public function addCommission(? Commission $commission){
+        if(!$this->commission->contains($commission)){
+            $this->commission->add($commission);
+        }
+        return $this;
+    }
+
+    public function removeCommission(? Commission $commission){
+        if($this->commission->contains($commission)){
+            $this->commission->remove($commission);
+        }
+        return $this;
+    }
+
+    public function getCommission(){
+        return $this;
+    }
+
+    public function addConsume(? ConsumeLog $consume){
+        if(!$this->consume->contains($consume)){
+            $this->consume->add($consume);
+        }
+        return $this;
+    }
+
+    public function removeConsume(? ConsumeLog $consume){
+        if($this->consume->contains($consume)){
+            $this->consume->remove($consume);
+        }
+        return $this;
+    }
+
+    public function getConsume(){
+        return $this->consume;
+    }
+
+    public function addRecharge(? RechargeLog $recharge){
+        if(!$this->recharge->contains($recharge)){
+            $this->recharge->add($recharge);
+        }
+        return $this;
+    }
+
+    public function removeRecharge(RechargeLog $recharge){
+        if($this->recharge->contains($recharge)){
+            $this->recharge->remove($recharge);
+        }
+        return $this;
+    }
+
+    public function getRecharge(){
+        return $this->recharge;
+    }
+
+    public function addShares(? Shares $shares){
+        if(!$this->shares->contains($shares)){
+            $this->shares->add($shares);
+        }
+        return $this;
+    }
+
+    public function removeShares(Shares $shares){
+        if($this->shares->contains($shares)){
+            $this->shares->remove($shares);
+        }
+        return $this;
+    }
+
+    public function getShares(){
+        return $this->shares;
+    }
+
+    /**
+     * Set direct
+     *
+     * @param integer $direct
+     *
+     * @return User
+     */
+    public function setDirect($direct)
+    {
+        $this->direct = $direct;
+        if($direct >= 20 && 60 > $direct){
+            $this->setLevel(self::LEVLE_1);
+        }
+        if(60 <= $direct){
+            $this->setLevel(self::LEVLE_2);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get direct
+     *
+     * @return int
+     */
+    public function getDirect()
+    {
+        return $this->direct;
+    }
+
+    /**
+     * Set indirect
+     *
+     * @param integer $indirect
+     *
+     * @return User
+     */
+    public function setIndirect($indirect)
+    {
+        $this->indirect = $indirect;
+
+        return $this;
+    }
+
+    /**
+     * Get indirect
+     *
+     * @return int
+     */
+    public function getIndirect()
+    {
+        return $this->indirect;
+    }
+
+    public function setLevel(? string $level){
+        $this->level = $level;
+        return $this;
+    }
+
+    public function getLevel(){
+        return $this->level;
+    }
+
     public function __construct(){
         parent::__construct();
+        $this->amount = 0;
+        $this->setDirect(0);
+        $this->setIndirect(0);
         $this->directTeam = new ArrayCollection();
+        $this->cashed = new ArrayCollection();
+        $this->commission = new ArrayCollection();
+        $this->consume = new ArrayCollection();
+        $this->recharge = new ArrayCollection();
+        $this->shares = new ArrayCollection();
     }
 }
 
