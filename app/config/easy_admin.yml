@@ -8,4 +8,11 @@ easy_admin:
         datetime: 'Y年m月d日H:i:s'
     design:
         menu:
-            - {label: '用户管理', entity: User}
+            - {label: '用户管理', entity: User }
+            - {label: '商品管理', entity: Product }
+            - {label: '文章管理', entity: News }
+            - {label: '分类管理', entity: Tag }
+            - {label: '充值记录', entity: RechargeLog }
+            - {label: '提现记录', entity: CashLog }
+            - {label: '分红记录', entity: Shares }
+            - {label: '提成管理', entity: Commission }

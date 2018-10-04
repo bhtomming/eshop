@@ -202,6 +202,11 @@ class Product
         return $this->sales;
     }
 
+    public function __toString()
+    {
+        return $this->title ? $this->title : '';
+    }
+
     public function __construct()
     {
         $this->setSales(0);

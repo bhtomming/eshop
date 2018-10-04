@@ -59,6 +59,13 @@ class Commission
     /**
      * @var float
      *
+     * @ORM\Column(name="teamCommission", type="float", nullable=true)
+     */
+    private $teamCommission;
+
+    /**
+     * @var float
+     *
      * @ORM\Column(name="directProportion", type="float", nullable=true)
      */
     private $directProportion;
@@ -310,6 +317,15 @@ class Commission
     public function getCreatedAt()
     {
         return $this->createdAt;
+    }
+
+    public function setTeamCommission($teamCommission){
+        $this->teamCommission = $teamCommission;
+        return $this;
+    }
+
+    public function getTeamCommission(){
+        return $this->teamCommission;
     }
 
     public function __construct()

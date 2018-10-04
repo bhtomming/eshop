@@ -1,0 +1,13 @@
+easy_admin:
+    entities:
+        RechargeLog:
+            class: AppBundle\Entity\RechargeLog
+            label: '充值'
+            list:
+                title: '充值记录'
+                fields:
+                    - { property: rechargeType, label: '充值方式' }
+                    - { property: amount, label: '充值金额' }
+                    - { property: afterAmount, label: '余额' }
+                    - { property: createdAt, label: '时间' }
+                    - { property: user, label: '用户' }

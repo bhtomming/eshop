@@ -1,0 +1,16 @@
+easy_admin:
+    entities:
+        CashLog:
+            class: AppBundle\Entity\Cash
+            label: '提现'
+            list:
+                title: '充值记录'
+                fields:
+                    - { property: amount, label: '提现金额' }
+                    - { property: cashType, label: '提现方式' }
+                    - { property: afterAmount, label: '余额' }
+                    - { property: status, label: '状态' }
+                    - { property: createdAt, label: '申请时间' }
+                    - { property: passedAt, label: '同意时间' }
+                    - { property: user, label: '用户' }
+                    - { property: auditor, label: '审批员' }

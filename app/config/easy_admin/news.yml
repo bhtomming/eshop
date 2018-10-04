@@ -1,0 +1,20 @@
+easy_admin:
+    entities:
+        News:
+            class: AppBundle\Entity\News
+            label: '新闻'
+            form:
+                fields:
+                    - { property: title, label: '标题' }
+                    - { property: content, label: '内容' }
+                    - { property: tag, label: '类别' }
+                    - { property: createdAt, label: '时间' }
+                    - { property: author, label: '作者' }
+            list:
+                title: '新闻列表'
+                fields:
+                    - { property: title, label: '标题' }
+                    - { property: content, label: '内容' }
+                    - { property: tag, label: '类别' }
+                    - { property: createdAt, label: '时间' }
+                    - { property: author, label: '作者' }

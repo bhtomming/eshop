@@ -1,0 +1,14 @@
+easy_admin:
+    entities:
+        Tag:
+            class: AppBundle\Entity\Tag
+            label: '分类'
+            form:
+                fields:
+                    - { property: parent, label: '上级分类' }
+                    - { property: name, label: '名称' }
+            list:
+                title: '%%entity_label%%列表'
+                fields:
+                    - { property: parent, label: '上级分类' }
+                    - { property: name, label: '名称' }

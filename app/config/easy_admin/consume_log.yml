@@ -1,0 +1,13 @@
+easy_admin:
+    entities:
+        ConsumeLog:
+            class: AppBundle\Entity\ConsumeLog
+            label: '消息记录'
+            list:
+                title: '消费记录'
+                fields:
+                    - { property: product, label: '消费商品' }
+                    - { property: number, label: '数量' }
+                    - { property: amount, label: '金额' }
+                    - { property: createdAt, label: '时间' }
+                    - { property: user, label: '用户' }

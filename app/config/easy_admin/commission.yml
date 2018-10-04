@@ -1,0 +1,15 @@
+easy_admin:
+    entities:
+        Commission:
+            class: AppBundle\Entity\Commission
+            lable: '提成'
+            list:
+                title: '提成记录'
+                fields:
+                    - { property: directConsume, label: '直属消费' }
+                    - { property: indirectConsume, label: '间接消费' }
+                    - { property: directCommission, label: '直接提成' }
+                    - { property: indirectCommission, label: '间接提成' }
+                    - { property: teamCommission, label: '团队提成' }
+                    - { property: createdAt, label: '时间' }
+                    - { property: user, label: '用户' }

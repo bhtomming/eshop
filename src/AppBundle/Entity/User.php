@@ -507,6 +507,11 @@ class User extends BaseUser
         return $this->level;
     }
 
+    public function __toString()
+    {
+        return $this->realname ? $this->realname : '';
+    }
+
     public function __construct(){
         parent::__construct();
         $this->amount = 0;
