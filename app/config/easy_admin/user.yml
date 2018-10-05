@@ -3,3 +3,19 @@ easy_admin:
         User:
             class: AppBundle\Entity\User
             label: '用户'
+            form:
+                fields:
+                    - { property: username, label: '用户名' }
+                    - { property: email, label: '邮箱' }
+                    - { property: phone, label: '手机' }
+                    - { property: realname, label: '真实姓名' }
+                    - { property: address, label: '地址' }
+                    - { property: 'plainPassword', label: '密码', type: 'repeated', type_options: { type: 'Symfony\Component\Form\Extension\Core\Type\PasswordType', first_options: { label: '密码'},second_options: {label : '重复密码'},invalid_message: '密码是必须要填写的' } }
+            list:
+                title: '%%entity_label%%列表'
+                fields:
+                    - { property: username, label: '用户名' }
+                    - { property: email, label: '邮箱' }
+                    - { property: 'phone', label: '电话'}
+                    - { property: realname, label: '真实姓名' }
+                    - { property: 'lastLogin', label: '最后登录时间'}

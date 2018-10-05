@@ -3,12 +3,15 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * Product
  *
  * @ORM\Table(name="product")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProductRepository")
+ *  @Vich\Uploadable
  */
 class Product
 {
@@ -38,9 +41,9 @@ class Product
     /**
      * @var string
      *
-     * @ORM\Column(name="compnay", type="string", length=255, nullable=true)
+     * @ORM\Column(name="company", type="string", length=255, nullable=true)
      */
-    private $compnay;
+    private $company;
 
     /**
      * @var string
@@ -48,6 +51,12 @@ class Product
      * @ORM\Column(name="titleImg", type="string", length=255, nullable=true)
      */
     private $titleImg;
+
+    /**
+     * @Vich\UploadableField(mapping="product_images", fileNameProperty="titleImg")
+     * @var File
+     */
+    private $imageFile;
 
     /**
      * @var string
@@ -61,6 +70,18 @@ class Product
      * @ORM\Column(name="sales", type="integer")
      */
     private $sales;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @var \DateTime
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @var \DateTime
+     */
+    private $updatedAt;
 
 
     /**
@@ -122,27 +143,27 @@ class Product
     }
 
     /**
-     * Set compnay
+     * Set company
      *
-     * @param string $compnay
+     * @param string $company
      *
      * @return Product
      */
-    public function setCompnay($compnay)
+    public function setCompany($company)
     {
-        $this->compnay = $compnay;
+        $this->company = $company;
 
         return $this;
     }
 
     /**
-     * Get compnay
+     * Get company
      *
      * @return string
      */
-    public function getCompnay()
+    public function getCompany()
     {
-        return $this->compnay;
+        return $this->company;
     }
 
     /**
@@ -168,6 +189,25 @@ class Product
     {
         return $this->titleImg;
     }
+
+    public function setImageFile(File $image = null)
+    {
+        $this->imageFile = $image;
+
+        // VERY IMPORTANT:
+        // It is required that at least one field changes if you are using Doctrine,
+        // otherwise the event listeners won't be called and the file is lost
+        if ($image) {
+            // if 'updatedAt' is not defined in your entity, use another property
+            $this->updatedAt = new \DateTime('now');
+        }
+    }
+
+    public function getImageFile()
+    {
+        return $this->imageFile;
+    }
+
 
     /**
      * Set description
@@ -202,6 +242,24 @@ class Product
         return $this->sales;
     }
 
+    public function setCreatedAt(\DateTime $dateTime){
+        $this->createdAt = $dateTime;
+        return $this;
+    }
+
+    public function getCreatedAt(){
+        return $this->createdAt;
+    }
+
+    public function setUpdatedAt(\DateTime $dateTime){
+        $this->updatedAt = $dateTime;
+        return $this;
+    }
+
+    public function getUpdatedAt(){
+        return $this->updatedAt;
+    }
+
     public function __toString()
     {
         return $this->title ? $this->title : '';
@@ -210,6 +268,7 @@ class Product
     public function __construct()
     {
         $this->setSales(0);
+        $this->createdAt = new \DateTime('now');
     }
 }
 

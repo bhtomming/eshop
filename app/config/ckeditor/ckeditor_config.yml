@@ -1,0 +1,26 @@
+ivory_ck_editor:
+    input_sync: true
+    default_config: advanced_config
+    configs:
+        base_config:
+            filebrowserImageUploadUrl: '/uploads/images/'
+            toolbar:
+                - { name: "styles", items: ['Bold', 'Italic', 'BulletedList', 'Link'] }
+        advanced_config:
+            skin: "kama,/bundles/app/skins/kama/"
+            filebrowserImageUploadUrl: '/uploads/images/'
+#            filebrowserImageUploadRoute: 'file_upload'
+#            filebrowserBrowseRoute: 'file_view'
+            toolbar: advanced_toolbar
+            font_names: '宋体/SimSun;新宋体/NSimSun;仿宋_GB2312/FangSong_GB2312;楷体_GB2312/KaiTi_GB2312;黑体/SimHei;微软雅黑/Microsoft YaHei;'
+            height: 600
+    toolbars:
+        configs:
+            advanced_toolbar:
+                - ['Source','-','Cut','Copy','Paste','PasteText','PasteFromWord','RemoveFormat']
+                - ['SelectAll','-','CreateDiv','-','Blockquote','-','Undo','-','ShowBlocks']
+                - ['Link','Image','Flash','Table','HorizontalRule','SpecialChar','Smiley','Iframe']
+                - '/'
+                - [ 'Bold' , 'Italic','Underline', 'Strike','Subscript','Superscript','NumberedList','BulletedList','Outdent','Indent']
+                - ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']
+                - ['Font','Format','FontSize','TextColor','-','BGColor']
