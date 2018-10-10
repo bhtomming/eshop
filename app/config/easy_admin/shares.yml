@@ -6,10 +6,10 @@ easy_admin:
             list:
                 title: '分红记录'
                 fields:
-                    - { property: consumeAmount, label: '消费金额' }
-                    - { property: shares, label: '持股' }
+                    - { property: consume.amount, label: '消费金额' }
+                    - { property: shares, label: '份数' }
                     - { property: bonus, label: '获得分红' }
-                    - { property: afterBonus, label: '累计分红' }
+                    - { property: consume.afterBonus, label: '累计分红' }
                     - { property: createdAt, label: '开始时间' }
-                    - { property: endAt, label: '结束时间' }
+                    - { property: consume.endAt, label: '结束时间' }
                     - { property: user, label: '用户' }

@@ -1,0 +1,19 @@
+{% extends "base.html.twig" %}
+
+{% block title %}个人中心{% endblock %}
+
+{% block body %}
+<h1>会员中心</h1>
+    <ul>
+        <li>用户名{{ app.user.username }}<a href="{{ path('user_show') }}" >详细信息</a></li>
+        <li>余额:{{ app.user.amount }}元</li>
+        <li>团队: 直接下线：{{ app.user.direct }}人  间接下线：{{ app.user.indirect }}人</li>
+        <li><a href="{{ path('profile_consume') }}" >我的消费</a></li>
+        <li><a href="{{ path('profile_commission') }}">提成详情</a></li>
+        <li><a href="{{ path('profile_shares') }}" >分红详情</a></li>
+        <li><a href="{{ path('recharge_new') }}" >充值</a></li>
+        <li><a href="{{ path('cash_new') }}" >提现</a></li>
+        <li><a href="{{ path('profile_recharge_list') }}" >充值记录</a></li>
+        <li><a href="{{ path('profile_cash_list') }}" >提现记录</a></li>
+    </ul>
+{% endblock %}

@@ -16,3 +16,4 @@ easy_admin:
             - {label: '提现记录', entity: CashLog }
             - {label: '分红记录', entity: Shares }
             - {label: '提成管理', entity: Commission }
+            - {label: '每日报表', entity: Report }

@@ -65,7 +65,7 @@ class Cash
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="passedAt", type="date")
+     * @ORM\Column(name="passedAt", type="date", nullable=true)
      */
     private $passedAt;
 
@@ -103,7 +103,6 @@ class Cash
     public function setUser(? User $user)
     {
         $this->user = $user;
-        $user->addCashed($this);
 
         return $this;
     }
@@ -289,6 +288,7 @@ class Cash
     public function __construct()
     {
         $this->setStatus(self::UNPASS);
+        $this->conditions = 500;
         $this->setCreatedAt(new \DateTime('now'));
     }
 }

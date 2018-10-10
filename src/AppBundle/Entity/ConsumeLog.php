@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 
@@ -13,6 +14,9 @@ use Doctrine\ORM\Mapping\JoinColumn;
  */
 class ConsumeLog
 {
+    const PAYING = 0;
+    const PAYEND = 1;
+
     /**
      * @var int
      *
@@ -30,13 +34,14 @@ class ConsumeLog
 
     /**
      * @ORM\ManyToOne(targetEntity="Product")
+     *
      */
     private $product;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="createdAt", type="date")
+     * @ORM\Column(name="createdAt", type="datetime")
      */
     private $createdAt;
 
@@ -53,6 +58,33 @@ class ConsumeLog
      * @ORM\Column(name="amount", type="float")
      */
     private $amount;
+
+    /**
+     * @var Shares
+     * @ORM\OneToMany(targetEntity="Shares", mappedBy="consume",cascade={"persist","remove"})
+     */
+    private $shares;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="afterBonus", type="float", nullable=true)
+     */
+    private $afterBonus;
+
+    /**
+     * @var boolean
+     * @ORM\Column(name="status", type="boolean")
+     */
+    private $status;
+
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="endAt", type="datetime", nullable=true)
+     */
+    private $endAt;
 
 
     /**
@@ -75,7 +107,7 @@ class ConsumeLog
     public function setUser(? User $user)
     {
         $this->user = $user;
-        $user->addConsume($this);
+        //$user->addConsume($this);
 
         return $this;
     }
@@ -186,9 +218,96 @@ class ConsumeLog
         return $this->amount;
     }
 
+    public function setShares(? Shares $shares){
+        $this->addShares($shares);
+        return $this;
+    }
+
+    public function addShares(? Shares $shares){
+        if(!$this->shares->contains($shares)){
+            $shares->setConsume($this);
+            $this->shares->add($shares);
+        }
+        return $this;
+    }
+
+    public function removeShares(? Shares $shares){
+        if($this->shares->contains($shares)){
+            $this->shares->remove($shares);
+            $shares->setConsume(null);
+        }
+        return $this;
+    }
+
+    public function getShares(){
+        return $this->shares;
+    }
+
+    /**
+     * Set afterBonus
+     *
+     * @param float $afterBonus
+     *
+     * @return ConsumeLog
+     */
+    public function setAfterBonus($afterBonus)
+    {
+        $this->afterBonus = $afterBonus;
+
+        return $this;
+    }
+
+    /**
+     * Get afterBonus
+     *
+     * @return float
+     */
+    public function getAfterBonus()
+    {
+        return $this->afterBonus;
+    }
+
+    public function setStatus($status){
+        $this->status = $status;
+        if($status == self::PAYEND){
+            $this->setEndAt(new \DateTime('now'));
+        }
+        return $this;
+    }
+
+    public function getStatus(){
+        return $this->status;
+    }
+
+    /**
+     * Set endAt
+     *
+     * @param \DateTime $endAt
+     *
+     * @return ConsumeLog
+     */
+    public function setEndAt($endAt)
+    {
+        $this->endAt = $endAt;
+
+        return $this;
+    }
+
+    /**
+     * Get endAt
+     *
+     * @return \DateTime
+     */
+    public function getEndAt()
+    {
+        return $this->endAt;
+    }
+
     public function __construct()
     {
         $this->setCreatedAt(new \DateTime('now'));
+        $this->setStatus(self::PAYING);
+        $this->shares = new ArrayCollection();
     }
 }
 

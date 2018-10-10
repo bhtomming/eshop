@@ -1,0 +1,13 @@
+easy_admin:
+    entities:
+        Report:
+            class: AppBundle\Entity\Businessreport
+            label: '报表'
+            list:
+                fields:
+                    - id
+                    - {property: turnover, label: '今日消费'}
+                    - {property: smallDish, label: '小盘'}
+                    - {property: shares, label: '份数'}
+                    - {property: preShare, label: '每份金额'}
+                    - {property: updatedAt, label: '更新时间'}

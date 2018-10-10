@@ -1,0 +1,29 @@
+{% extends "base.html.twig" %}
+
+{% block title %}提成详情{% endblock %}
+
+{% block body %}
+    <h1>我的提成详情</h1>
+    <table>
+        <tbody>
+        <tr>
+            <th>直属消费</th>
+            <th>直属提成</th>
+            <th>间接消费</th>
+            <th>间接提成</th>
+            <th>团队提成</th>
+            <th>提成时间</th>
+        </tr>
+        {% for commission in commissions %}
+            <tr>
+                <td>{{ commission.directconsume }}</td>
+                <td>{{ commission.directcommission }}</td>
+                <td>{{ commission.indirectconsume }}</td>
+                <td>{{ commission.indirectcommission }}</td>
+                <td>{{ commission.directProportion }}</td>
+                <td>{{ commission.createdAt|date('Y年m月d日  H:i:s') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Rechargelogs list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Rechargetype</th>
+                <th>Amount</th>
+                <th>Afteramount</th>
+                <th>Createdat</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for rechargeLog in rechargeLogs %}
+            <tr>
+                <td><a href="{{ path('recharge_show', { 'id': rechargeLog.id }) }}">{{ rechargeLog.id }}</a></td>
+                <td>{{ rechargeLog.rechargeType }}</td>
+                <td>{{ rechargeLog.amount }}</td>
+                <td>{{ rechargeLog.afterAmount }}</td>
+                <td>{% if rechargeLog.createdAt %}{{ rechargeLog.createdAt|date('Y-m-d') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('recharge_show', { 'id': rechargeLog.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('recharge_edit', { 'id': rechargeLog.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('recharge_new') }}">Create a new rechargeLog</a>
+        </li>
+    </ul>
+{% endblock %}

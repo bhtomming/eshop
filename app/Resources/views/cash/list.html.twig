@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} 我的提现记录 {% endblock %}
+{% set cashes = app.user.cashed %}
+{% block body %}
+    <h1>我的提现记录</h1>
+    <table>
+        <tbody>
+        <tr>
+            <th>提现方式</th>
+            <th>金额</th>
+            <th>状态</th>
+            <th>提现时间</th>
+        </tr>
+        {% for cash in cashes %}
+            <tr>
+                <td>{{ cash.cashType }}</td>
+                <td>{{ cash.amount }}</td>
+                <td>{{ cash.status }}</td>
+                <td>{{ cash.createdAt|date('Y年m月d日  H:i:s') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('profile') }}">返回个人中心</a>
+{% endblock %}

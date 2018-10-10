@@ -1,0 +1,26 @@
+{% extends "base.html.twig" %}
+
+{% block title %}消费记录列表{% endblock %}
+{% set consumes = app.user.consume %}
+{% block body %}
+<h1>我的消费记录</h1>
+<table>
+    <tbody>
+    <tr>
+        <th>购买产品</th>
+        <th>价格</th>
+        <th>数量</th>
+        <th>时间</th>
+    </tr>
+    {% for consume in consumes %}
+    <tr>
+        <td>{{ consume.product }}</td>
+        <td>{{ consume.product.price }}</td>
+        <td>{{ consume.number }}</td>
+        <td>{{ consume.createdAt|date('Y年m月d日  H:i:s') }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

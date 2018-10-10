@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Rechargelog</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ rechargeLog.id }}</td>
+            </tr>
+            <tr>
+                <th>Rechargetype</th>
+                <td>{{ rechargeLog.rechargeType }}</td>
+            </tr>
+            <tr>
+                <th>Amount</th>
+                <td>{{ rechargeLog.amount }}</td>
+            </tr>
+            <tr>
+                <th>Afteramount</th>
+                <td>{{ rechargeLog.afterAmount }}</td>
+            </tr>
+            <tr>
+                <th>Createdat</th>
+                <td>{% if rechargeLog.createdAt %}{{ rechargeLog.createdAt|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('recharge_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('recharge_edit', { 'id': rechargeLog.id }) }}">Edit</a>
+        </li>
+    </ul>
+{% endblock %}

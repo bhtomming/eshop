@@ -1,0 +1,17 @@
+{% extends "base.html.twig" %}
+
+{% block title %}个人资料显示{% endblock %}
+
+{% block body %}
+<h1>个人资料详细信息</h1>
+    <ul>
+        <li>用户名:{{ app.user.username }}</li>
+        <li>手机:{{ app.user.phone }}</li>
+        <li>邮箱:{{ app.user.email }}</li>
+        <li>支付宝:{{ app.user.alipay }}</li>
+        <li>银行卡:{{ app.user.bankcard }}</li>
+        <li>姓名:{{ app.user.realname }}</li>
+        <li>地址:{{ app.user.address }}</li>
+        <li>余额:{{ app.user.amount }}元</li>
+    </ul>
+{% endblock %}

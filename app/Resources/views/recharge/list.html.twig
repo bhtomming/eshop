@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}充值记录 {% endblock %}
+{% set recharges = app.user.recharge %}
+{% block body %}
+    <h1>我的充值记录</h1>
+    <table style="text-align: center">
+        <tbody>
+        <tr>
+            <th>充值方式</th>
+            <th>金额</th>
+            <th>充值后余额</th>
+            <th>充值时间</th>
+        </tr>
+        {% for recharge in recharges %}
+            <tr>
+                <td>{{ recharge.rechargeType }}</td>
+                <td>{{ recharge.amount }}</td>
+                <td>{{ recharge.afterAmount }}</td>
+                <td>{{ recharge.createdAt|date('Y年m月d日  H:i:s') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

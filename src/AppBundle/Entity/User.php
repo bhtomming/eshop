@@ -102,27 +102,27 @@ class User extends BaseUser
     private $referee;
 
     /**
-     * @ORM\OneToMany(targetEntity="Cash", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Cash", mappedBy="user",cascade={"persist","remove"})
      */
     private $cashed;
 
     /**
-     * @ORM\OneToMany(targetEntity="Commission", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Commission", mappedBy="user",cascade={"persist","remove"})
      */
     private $commission;
 
     /**
-     * @ORM\OneToMany(targetEntity="ConsumeLog", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="ConsumeLog", mappedBy="user",cascade={"persist","remove"})
      */
     private $consume;
 
     /**
-     * @ORM\OneToMany(targetEntity="RechargeLog", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="RechargeLog", mappedBy="user",cascade={"persist","remove"})
      */
     private $recharge;
 
     /**
-     * @ORM\OneToMany(targetEntity="Shares", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Shares", mappedBy="user",cascade={"persist","remove"})
      */
     private $shares;
 
@@ -239,6 +239,11 @@ class User extends BaseUser
         return $this->amount;
     }
 
+    public function addAmount($amount){
+        $this->amount += $amount;
+        return $this;
+    }
+
     /**
      * Set bank
      *
@@ -297,7 +302,12 @@ class User extends BaseUser
     public function setReferee(? User $referee)
     {
         $this->referee = $referee;
-
+        if($referee instanceof User){
+            $referee->addDirect();
+            if($referee->getReferee() instanceof User){
+                $referee->getReferee()->addIndirect();
+            }
+        }
         return $this;
     }
 
@@ -311,6 +321,13 @@ class User extends BaseUser
         return $this->referee;
     }
 
+    public function removeReferee(){
+        $parent = $this->getReferee();
+        if($parent instanceof User){
+            $parent->removeDirectTeam($this);
+        }
+    }
+
     public function setAddress($address){
         $this->address = $address;
         return $this;
@@ -318,6 +335,11 @@ class User extends BaseUser
 
     public function getAddress(){
         return $this->address;
+    }
+
+    public function setDirectTeam(User $user){
+        $this->addDirectTeam($user);
+        return $this;
     }
 
     public function addDirectTeam(User $user){
@@ -335,28 +357,32 @@ class User extends BaseUser
 
     public function removeDirectTeam(User $user){
         if($this->directTeam->contains($user)){
-            $this->directTeam->remove($user);
             $user->setReferee(null);
+            $this->directTeam->removeElement($user);
             $this->direct--;
+            $this->indirect -= $user->getDirect() - 1;
             $parent = $this->getReferee();
-            if($parent){
+            if($parent instanceof User){
                 $parent->setIndirect($parent->getIndirect() - 1);
             }
         }
         return $this;
     }
 
-    public function setDirectTeam(User $user){
-        $this->addDirectTeam($user);
-    }
+
 
     public function getDirectTeam(){
         return $this->directTeam;
     }
 
+    public function setCashed(? Cash $cash){
+        $this->addCashed($cash);
+    }
+
     public function addCashed(? Cash $cash){
         if(!$this->cashed->contains($cash)){
             $this->cashed->add($cash);
+            $cash->setUser($this);
         }
         return $this;
     }
@@ -364,6 +390,7 @@ class User extends BaseUser
     public function removeCashed(? Cash $cash){
         if($this->cashed->contains($cash)){
             $this->cashed->remove($cash);
+            $cash->setUser(null);
         }
         return $this;
     }
@@ -372,8 +399,13 @@ class User extends BaseUser
         return $this->cashed;
     }
 
+    public function setCommission(? Commission $commission){
+        $this->addCommission($commission);
+    }
+
     public function addCommission(? Commission $commission){
         if(!$this->commission->contains($commission)){
+            $commission->setUser($this);
             $this->commission->add($commission);
         }
         return $this;
@@ -387,11 +419,17 @@ class User extends BaseUser
     }
 
     public function getCommission(){
+        return $this->commission;
+    }
+
+    public function setConsume(? ConsumeLog $consume){
+        $this->addConsume($consume);
         return $this;
     }
 
     public function addConsume(? ConsumeLog $consume){
         if(!$this->consume->contains($consume)){
+            $consume->setUser($this);
             $this->consume->add($consume);
         }
         return $this;
@@ -400,6 +438,7 @@ class User extends BaseUser
     public function removeConsume(? ConsumeLog $consume){
         if($this->consume->contains($consume)){
             $this->consume->remove($consume);
+            $consume->setUser(null);
         }
         return $this;
     }
@@ -426,9 +465,15 @@ class User extends BaseUser
         return $this->recharge;
     }
 
+    public function setShares(? Shares $shares){
+        $this->addShares($shares);
+        return $this;
+    }
+
     public function addShares(? Shares $shares){
         if(!$this->shares->contains($shares)){
             $this->shares->add($shares);
+            $shares->setUser($this);
         }
         return $this;
     }
@@ -436,6 +481,7 @@ class User extends BaseUser
     public function removeShares(Shares $shares){
         if($this->shares->contains($shares)){
             $this->shares->remove($shares);
+            $shares->setUser(null);
         }
         return $this;
     }
@@ -454,11 +500,24 @@ class User extends BaseUser
     public function setDirect($direct)
     {
         $this->direct = $direct;
-        if($direct >= 20 && 60 > $direct){
+        if($direct >= 20){
             $this->setLevel(self::LEVLE_1);
+            if(60 <= $direct){
+                $this->setLevel(self::LEVLE_2);
+            }
+            $this->removeReferee();
         }
-        if(60 <= $direct){
-            $this->setLevel(self::LEVLE_2);
+        return $this;
+    }
+
+    public function addDirect(){
+        $this->direct++;
+        if($this->direct >= 20 ){
+            $this->setLevel(self::LEVLE_1);
+            if(60 <= $this->direct){
+                $this->setLevel(self::LEVLE_2);
+            }
+            $this->removeReferee();
         }
 
         return $this;
@@ -495,7 +554,17 @@ class User extends BaseUser
      */
     public function getIndirect()
     {
+        /*if(!$this->directTeam->isEmpty()){
+            foreach ($this->getDirectTeam() as $user){
+                $this->indirect += $user->getDirect();
+            }
+        }*/
         return $this->indirect;
+    }
+
+    public function addIndirect(){
+        $this->indirect++;
+        return $this;
     }
 
     public function setLevel(? string $level){
@@ -506,6 +575,20 @@ class User extends BaseUser
     public function getLevel(){
         return $this->level;
     }
+
+    /*public function buy(Product $product,$number){
+        $consume = new ConsumeLog();
+        $consume->setNumber($number);
+        $consume->setAmount($product->getPrice() * $number);
+        $product->setSales($product->getSales() + $number);
+        $consume->setProduct($product);
+        $consume->setUser($this);
+        $this->addConsume($consume);
+        $this->amount = $this->amount - $consume->getAmount();
+        return $consume;
+    }*/
+
+
 
     public function __toString()
     {

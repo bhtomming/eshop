@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>提现</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <input type="submit" value="提现" />
+    {{ form_end(form) }}
+
+    <ul>
+        <li>
+            <a href="{{ path('profile') }}">返回个人中心</a>
+        </li>
+    </ul>
+{% endblock %}

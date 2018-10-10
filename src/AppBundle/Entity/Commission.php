@@ -45,9 +45,9 @@ class Commission
     /**
      * @var float
      *
-     * @ORM\Column(name="directCommision", type="float", nullable=true)
+     * @ORM\Column(name="directCommission", type="float", nullable=true)
      */
-    private $directCommision;
+    private $directCommission;
 
     /**
      * @var float
@@ -112,7 +112,7 @@ class Commission
     public function setUser(? User $user)
     {
         $this->user = $user;
-        $user->addCommission($this);
+        //$user->addCommission($this);
 
         return $this;
     }
@@ -176,27 +176,27 @@ class Commission
     }
 
     /**
-     * Set directCommision
+     * Set directCommission
      *
-     * @param float $directCommision
+     * @param float $directCommission
      *
      * @return Commission
      */
-    public function setDirectCommision($directCommision)
+    public function setDirectCommission($directCommission)
     {
-        $this->directCommision = $directCommision;
+        $this->directCommission = $directCommission;
 
         return $this;
     }
 
     /**
-     * Get directCommision
+     * Get directCommission
      *
      * @return float
      */
-    public function getDirectCommision()
+    public function getDirectCommission()
     {
-        return $this->directCommision;
+        return $this->directCommission;
     }
 
     /**

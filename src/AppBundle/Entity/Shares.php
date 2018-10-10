@@ -29,11 +29,10 @@ class Shares
     private $user;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="consumeAmount", type="float")
+     * @ORM\ManyToOne(targetEntity="ConsumeLog", inversedBy="shares")
+     * @JoinColumn(name="consume_id", referencedColumnName="id")
      */
-    private $consumeAmount;
+    private $consume;
 
     /**
      * @var \DateTime
@@ -52,23 +51,10 @@ class Shares
     /**
      * @var float
      *
-     * @ORM\Column(name="bonus", type="float")
+     * @ORM\Column(name="bonus", type="float", nullable=true)
      */
     private $bonus;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="afterBonus", type="float")
-     */
-    private $afterBonus;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="endAt", type="date")
-     */
-    private $endAt;
 
 
     /**
@@ -91,7 +77,7 @@ class Shares
     public function setUser(? User $user)
     {
         $this->user = $user;
-        $user->addShares($this);
+        //$user->addShares($this);
         return $this;
     }
 
@@ -106,27 +92,27 @@ class Shares
     }
 
     /**
-     * Set consumeAmount
+     * Set consume
      *
-     * @param float $consumeAmount
+     * @param ConsumeLog $consumeAmount
      *
      * @return Shares
      */
-    public function setConsumeAmount($consumeAmount)
+    public function setConsume(? ConsumeLog $consume)
     {
-        $this->consumeAmount = $consumeAmount;
+        $this->consume = $consume;
 
         return $this;
     }
 
     /**
-     * Get consumeAmount
+     * Get consume
      *
-     * @return float
+     * @return ConsumeLog
      */
-    public function getConsumeAmount()
+    public function getConsume()
     {
-        return $this->consumeAmount;
+        return $this->consume;
     }
 
     /**
@@ -199,54 +185,6 @@ class Shares
     public function getBonus()
     {
         return $this->bonus;
-    }
-
-    /**
-     * Set afterBonus
-     *
-     * @param float $afterBonus
-     *
-     * @return Shares
-     */
-    public function setAfterBonus($afterBonus)
-    {
-        $this->afterBonus = $afterBonus;
-
-        return $this;
-    }
-
-    /**
-     * Get afterBonus
-     *
-     * @return float
-     */
-    public function getAfterBonus()
-    {
-        return $this->afterBonus;
-    }
-
-    /**
-     * Set endAt
-     *
-     * @param \DateTime $endAt
-     *
-     * @return Shares
-     */
-    public function setEndAt($endAt)
-    {
-        $this->endAt = $endAt;
-
-        return $this;
-    }
-
-    /**
-     * Get endAt
-     *
-     * @return \DateTime
-     */
-    public function getEndAt()
-    {
-        return $this->endAt;
     }
 
     public function __construct()

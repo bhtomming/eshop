@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}我的分红记录{% endblock %}
+
+{% block body %}
+    <h1>我的分红记录</h1>
+    <table>
+        <tbody>
+        <tr>
+            <th>消费金额</th>
+            <th>持股</th>
+            <th>获得分红</th>
+            <th>累计分红</th>
+            <th>获得时间</th>
+            <th>结束时间</th>
+        </tr>
+        {% for share in shares %}
+            {% set consume = share.consume %}
+            <tr>
+                <td>{{ share.consume.amount }}</td>
+                <td>{{ share.shares }}</td>
+                <td>{{ share.bonus }}</td>
+                <td></td>
+                <td>{{ share.createdAt|date('Y年m月d日  H:i:s') }}</td>
+                <td>{{ consume.endAt|date('Y年m月d日  H:i:s') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
