@@ -8,6 +8,7 @@
 
 namespace AppBundle\AdminController;
 
+use Symfony\Component\Routing\Annotation\Route;
 use AppBundle\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdmin;
 
@@ -29,5 +30,7 @@ class AdminController extends BaseAdmin
     public function preUpdateUserEntity($user){
         $this->get('fos_user.user_manager')->updateUser($user, false);
     }
+
+
 
 }

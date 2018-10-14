@@ -37,7 +37,7 @@ class Shares
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="createdAt", type="date")
+     * @ORM\Column(name="createdAt", type="datetime")
      */
     private $createdAt;
 

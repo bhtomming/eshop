@@ -38,3 +38,9 @@ services:
         arguments:
             $em: '@doctrine.orm.entity_manager'
         public: true
+
+    app.dividend_server:
+        class: 'AppBundle\Services\DividendServer'
+        arguments:
+            $em: '@doctrine.orm.entity_manager'
+        public: true

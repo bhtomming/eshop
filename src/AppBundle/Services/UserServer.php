@@ -38,6 +38,7 @@ class UserServer
         $shares = $this->shares($amount);
         $consume->setShares($shares);
         $user->addConsume($consume);
+        $user->addAmount($amount * 0.2); //返回20%给用户
         $user->addShares($shares);
         $this->commission($amount,$user);
         $this->report($amount);
@@ -85,6 +86,9 @@ class UserServer
         $report = $this->em->getRepository(Businessreport::class)->findOneBy(['no'=>"MY{$nowdate->format('Ymd')}"]);
         if(!$report instanceof Businessreport){
             $report = new Businessreport();
+            $yesterday = new \DateTime('-1 days');
+            $oldReport = $this->em->getRepository(Businessreport::class)->findOneBy(['no'=>"MY{$yesterday->format('Ymd')}"]);
+            $report->setShares($oldReport->getShares());
         }
         $report->addTurnover($amount);
         $report->addShares($amount * 10);

@@ -198,6 +198,11 @@ class Businessreport
         return $this;
     }
 
+    public function addProfit($profit){
+        $this->profit += $profit;
+        return $this;
+    }
+
     /**
      * Get profit
      *
@@ -209,7 +214,7 @@ class Businessreport
     }
 
     public function getPreshare(){
-        return number_format($this->smallDish / $this->shares,2);
+        return number_format($this->smallDish / $this->shares,3);
     }
 
     public function addTurnover($amount){

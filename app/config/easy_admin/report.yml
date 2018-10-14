@@ -6,8 +6,9 @@ easy_admin:
             list:
                 fields:
                     - id
-                    - {property: turnover, label: '今日消费'}
+                    - {property: turnover, label: '新进金'}
                     - {property: smallDish, label: '小盘'}
                     - {property: shares, label: '份数'}
                     - {property: preShare, label: '每份金额'}
+                    - {property: profit, label: '利润'}
                     - {property: updatedAt, label: '更新时间'}
